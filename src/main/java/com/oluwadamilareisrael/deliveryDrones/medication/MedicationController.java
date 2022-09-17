@@ -26,4 +26,16 @@ public class MedicationController {
     public void addNewDrones(@RequestBody Medication medication){
         medicationService.addNewMedication(medication);
     }
+
+    @DeleteMapping(path = "{medicationId}")
+    public void deleteMedication(@PathVariable("medicationId") Long medicationId){
+        medicationService.deleteMedication(medicationId);
+    }
+    @PutMapping(path = "{medicationId}")
+    public void updateStudent(@PathVariable("medicationId") Long medicationId,
+                              @RequestParam(required = false) String medName,
+                              @RequestParam(required = false) double medWeight,
+                              @RequestParam(required = false) String medCode){
+        medicationService.updateMedication(medicationId, medName, medWeight, medCode);
+    }
 }
