@@ -1,5 +1,7 @@
-package com.oluwadamilareisrael.deliveryDrones.medication;
+package com.oluwadamilareisrael.deliveryDrones.deliveryControllers;
 
+import com.oluwadamilareisrael.deliveryDrones.medication.Medication;
+import com.oluwadamilareisrael.deliveryDrones.medication.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +25,7 @@ public class MedicationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void addNewDrones(@RequestBody Medication medication){
+    public void addNewMedication(@RequestBody Medication medication){
         medicationService.addNewMedication(medication);
     }
 
@@ -32,10 +34,8 @@ public class MedicationController {
         medicationService.deleteMedication(medicationId);
     }
     @PutMapping(path = "{medicationId}")
-    public void updateStudent(@PathVariable("medicationId") Long medicationId,
-                              @RequestParam(required = false) String medName,
-                              @RequestParam(required = false) double medWeight,
-                              @RequestParam(required = false) String medCode){
-        medicationService.updateMedication(medicationId, medName, medWeight, medCode);
+    public void updateMedication(@PathVariable("medicationId")
+                                 @RequestParam Medication medication){
+        medicationService.updateMedication(medication);
     }
 }

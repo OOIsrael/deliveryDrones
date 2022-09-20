@@ -1,12 +1,13 @@
 package com.oluwadamilareisrael.deliveryDrones.medication;
 
-import com.oluwadamilareisrael.deliveryDrones.drones.Drones;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import com.oluwadamilareisrael.deliveryDrones.exceptionHandler.ExceptionHandlers;
 
 @Service
 public class MedicationService {
@@ -21,36 +22,48 @@ public class MedicationService {
         return medicationRepository.findAll();
     }
 
-    public void addNewMedication(Medication medication){
+    public boolean addNewMedication(Medication medication){
         System.out.println(medication);
         System.out.println("This is the code number: "+medication.getMedCode());
 
         Optional<Medication> medicationByMedCode = medicationRepository.findDronesBymedCode(medication.getMedCode());
         if(medicationByMedCode.isPresent()){
-            throw new IllegalStateException("Medication already exists");
+            //throw new IllegalStateException("Medication already exists");
+            throw new ExceptionHandlers.valueNotFound();
         }
         medicationRepository.save(medication);
+
+        return true;
     }
 
-    public void deleteMedication(Long medicationId) {
+    public boolean deleteMedication(Long medicationId) {
         boolean exits = medicationRepository.existsById(medicationId);
         if (!exits){
             throw new IllegalStateException("The Medication with Id "+medicationId+" does not exist");
         }
         medicationRepository.deleteById(medicationId);
+
+        return true;
     }
 
-    public void updateMedication(Long medicationId, String medName, double medWeight, String medCode) {
-        Medication medication = medicationRepository.findById(medicationId).orElseThrow(() -> new IllegalStateException("The Medication with Id "+medicationId+" does not exist"));
-        if (medName != null && medName.length() > 0 && !Objects.equals(medication.getMedName(), medName)){
-            medication.setMedName(medName);
+    //public boolean updateMedication(Long medicationId, String medName, double medWeight, String medCode) {
+    public boolean updateMedication(Medication medication) {
+        Medication medication1 = medicationRepository.findById (medication.getId()).orElseThrow(() -> new IllegalStateException("The Medication with Id "+medication.getId()+" does not exist"));
+        if (medication.getMedName() != null && medication.getMedName().length() > 0 && !Objects.equals(medication1.getMedName(), medication.getMedName())){
+            medication.setMedName(medication.getMedName());
         }
-        if (medCode != null && medCode.length() > 0 && !Objects.equals(medication.getMedCode(), medCode)){
-            Optional<Medication> medicationOptional = medicationRepository.findDronesBymedCode(medCode);
-            if (medicationOptional.isPresent()){
+        if (medication.getMedCode() != null && medication.getMedCode().length() > 0 && !Objects.equals(medication1.getMedCode(), medication.getMedCode())){
+            Optional<Medication> medicationByMedCode = medicationRepository.findDronesBymedCode(medication.getMedCode());
+            if (medicationByMedCode.isPresent()){
                 throw new IllegalStateException("Medication Code already present");
             }
-            medication.setMedCode(medCode);
+            medication.setMedCode(medication.getMedCode());
         }
+        if (medication.getMedWeight() != 0 && medication.getMedWeight() > 0){
+            medication.setMedCode(medication.getMedCode());
+        }else{
+            throw new IllegalStateException("Medication weight must be greater than Zero (0)");
+        }
+        return true;
     }
 }

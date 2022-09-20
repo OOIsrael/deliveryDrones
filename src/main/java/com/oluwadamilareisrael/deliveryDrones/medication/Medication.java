@@ -16,29 +16,11 @@ public class Medication {
             strategy = GenerationType.SEQUENCE,
             generator = "medication_sequence"
     )
-    private Long id;
-    private String medName;
-    private double medWeight;
-    private String medCode;
-    private Blob medImage;
-
-    public Medication() {
-    }
-
-    public Medication(String medName, double medWeight, String medCode, Blob medImage) {
-        this.medName = medName;
-        this.medWeight = medWeight;
-        this.medCode = medCode;
-        this.medImage = medImage;
-    }
-
-    public Medication(Long id, String medName, double medWeight, String medCode, Blob medImage) {
-        this.id = id;
-        this.medName = medName;
-        this.medWeight = medWeight;
-        this.medCode = medCode;
-        this.medImage = medImage;
-    }
+   private Long id;
+   private String medName;
+   private double medWeight;
+   private String medCode;
+   private Blob medImage;
 
     public Long getId() {
         return id;
@@ -77,6 +59,24 @@ public class Medication {
     }
 
     public void setMedImage(Blob medImage) {
+        this.medImage = medImage;
+    }
+
+    public Medication() {
+    }
+
+    public Medication(Long id, String medName, double medWeight, String medCode, Blob medImage) {
+        this.id = id;
+        this.medName = medName;
+        this.medWeight = medWeight;
+        this.medCode = medCode;
+        this.medImage = medImage;
+    }
+
+    public Medication(String medName, double medWeight, String medCode, Blob medImage) {
+        this.medName = medName;
+        this.medWeight = medWeight;
+        this.medCode = medCode;
         this.medImage = medImage;
     }
 

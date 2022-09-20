@@ -1,5 +1,7 @@
-package com.oluwadamilareisrael.deliveryDrones.drones;
+package com.oluwadamilareisrael.deliveryDrones.deliveryControllers;
 
+import com.oluwadamilareisrael.deliveryDrones.drones.Drones;
+import com.oluwadamilareisrael.deliveryDrones.drones.DronesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +32,8 @@ public class DronesController {
         dronesService.deleteDrone(studentId);
     }
     @PutMapping(path = "{droneId}")
-    public void updateStudent(@PathVariable("droneId") Long droneId,
-                              @RequestParam(required = false) String droneName,
-                              @RequestParam(required = false) String serialNumber,
-                              @RequestParam(required = false) String droneModel,
-                              @RequestParam(required = false) double weight,
-                              @RequestParam(required = false) int battery,
-                              @RequestParam(required = false) String state){
-        dronesService.updateDrone(droneId, droneName, serialNumber, droneModel, weight,battery, state);
+    public void updateDrones(@PathVariable("droneId")
+                             Drones drones){
+        dronesService.updateDrone(drones);
     }
 }
