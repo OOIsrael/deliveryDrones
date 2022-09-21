@@ -21,7 +21,7 @@ public class DronesService {
         return dronesRepository.findAll();
     }
 
-    public void addNewDrones(Drones drones){
+    public boolean addNewDrones(Drones drones){
         System.out.println(drones);
         System.out.println("This is the serial number: "+drones.getSerialNumber());
 
@@ -29,16 +29,36 @@ public class DronesService {
         if(dronesBySerialNumber.isPresent()){
             //throw new IllegalStateException("Drone already exists");
             throw new ExceptionHandlers.valueNotFound();
+        }else{
+            if(drones.getSerialNumber().length() > 100 || drones.getSerialNumber().length() <= 0){
+                throw new IllegalStateException("Drone Serial number greater than 100 characters");
+            }
+            if(!drones.getDroneModel().toUpperCase().equals("Lightweight") && !drones.getDroneModel().toUpperCase().equals("Middleweight") && !drones.getDroneModel().toUpperCase().equals("Cruiserweight") && !drones.getDroneModel().toUpperCase().equals("Heavyweight")){
+                throw new IllegalStateException("Invalid Drone model");
+            }
+            if(drones.getWeight() > 500 || drones.getWeight() <= 0){
+                throw new IllegalStateException("The acceptable Drone weight exceeded");
+            }
+            if(drones.getBattery() > 100 || drones.getBattery() < 0){
+                throw new IllegalStateException("The acceptable Drone weight exceeded");
+            }
+            if(!drones.getState().equals("IDLE") && !drones.getState().equals("LOADING") && !drones.getDroneModel().equals("LOADING") && !drones.getDroneModel().equals("LOADED") && !drones.getDroneModel().equals("DELIVERING") && !drones.getDroneModel().equals("DELIVERED") && !drones.getDroneModel().equals("RETURNING")){
+                throw new IllegalStateException("Invalid Drone state");
+            }
         }
         dronesRepository.save(drones);
+
+        return true;
     }
 
-    public void deleteDrone(Long droneId) {
+    public boolean deleteDrone(Long droneId) {
         boolean exits = dronesRepository.existsById(droneId);
         if (!exits){
             throw new IllegalStateException("The Drone with Id "+droneId+" does not exist");
         }
         dronesRepository.deleteById(droneId);
+
+        return true;
     }
 
     //public void updateDrone(Long droneId, String droneName, String serialNumber, String droneModel, double weight, int battery, String state) {

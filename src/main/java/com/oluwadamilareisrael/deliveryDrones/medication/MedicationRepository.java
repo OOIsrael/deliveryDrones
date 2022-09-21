@@ -9,4 +9,7 @@ import java.util.Optional;
 public interface MedicationRepository extends JpaRepository<Medication, Long> {
       @Query("SELECT s FROM Medication s where s.medCode = :medCode")
     Optional<Medication> findDronesBymedCode(String medCode);
+
+    @Query("SELECT s FROM Medication s where s.medName = :medName")
+    Optional<Medication> findDronesBymedName(String medName);
 }
